@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "electricity-predictor"
+version = "0.1.0"
+description = ""
+authors = ["sulcer <gregor.sulcer@student.um.si>"]
+readme = "README.md"
+
+[tool.poe.tasks]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.1"
+scikit-learn = "^1.4.1.post1"
+fastapi = "^0.110.0"
+uvicorn = {extras = ["standard"], version = "^0.28.0"}
+pytest = "^8.1.1"
+jupyter = "^1.0.0"
+numpy = "^1.26.4"
+seaborn = "^0.13.2"
+tensorflow = "^2.15.0.post1"
+requests = "^2.31.0"
+scipy = "^1.12.0"
+poethepoet = "^0.25.0"
+pydantic-settings = "^2.2.1"
+great-expectations = "^0.18.12"
+evidently = "^0.4.19"
+mlflow = "^2.12.1"
+dagshub = "^0.3.24"
+tf2onnx = "^1.16.1"
+onnxruntime = "^1.17.3"
+tf-keras = "^2.16.0"
+tensorflow-model-optimization = "^0.8.0"
+cachetools = "^5.3.3"
+sqlalchemy = "^2.0.29"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.2"
+black = "^24.4.0"
+jupyter = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
