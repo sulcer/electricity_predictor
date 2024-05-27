@@ -6,6 +6,7 @@ authors = ["sulcer <gregor.sulcer@student.um.si>"]
 readme = "README.md"
 
 [tool.poe.tasks]
+serve = "uvicorn src.serve.main:app --reload"
 
 [tool.poetry.dependencies]
 python = "^3.12"
