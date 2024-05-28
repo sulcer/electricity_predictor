@@ -89,7 +89,7 @@ class Fetcher:
             df_production = pd.DataFrame(production_per_type)
 
             file_name = data['production_types'][i]['name'].replace(' ', '_').replace('/', '').lower()
-            csv_file = f"{self.data_path}/raw/{file_name}_data.csv"
+            csv_file = f"{self.data_path}/raw/production_{file_name}_data.csv"
             if not os.path.exists(csv_file):
                 df_production.to_csv(csv_file, index=False)
             else:
