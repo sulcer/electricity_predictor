@@ -97,8 +97,8 @@ class Fetcher:
 
 def main():
     fetcher = Fetcher()
-    # fetcher.fetch_price_data()
-    # fetcher.fetch_weather_data()
+    fetcher.fetch_price_data()
+    fetcher.fetch_weather_data()
     fetcher.fetch_production_data()
 
 
