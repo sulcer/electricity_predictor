@@ -72,7 +72,6 @@ class Fetcher:
             'Nuclear',
             'Hydro Run-of-River',
             'Fossil brown coal / lignite',
-            'Fossil gas',
         ]
 
         for i in range(len(data['production_types'])):
@@ -88,7 +87,7 @@ class Fetcher:
 
             df_production = pd.DataFrame(production_per_type)
 
-            file_name = data['production_types'][i]['name'].replace(' ', '_').replace('/', '').lower()
+            file_name = data['production_types'][i]['name'].replace(' ', '_').replace('/', '').lower().split('_')[0]
             csv_file = f"{self.data_path}/raw/production_{file_name}_data.csv"
             if not os.path.exists(csv_file):
                 df_production.to_csv(csv_file, index=False)
