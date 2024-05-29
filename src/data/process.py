@@ -27,9 +27,15 @@ def merge_data(df, df_weather, target_feature, features, output_file_name):
 
     # validate_merge(24, df, output_file_name)
 
-    merged_df = pd.merge(df, df_weather, on='date')
+    if target_feature == 'price':
+        df_weather = df_weather.tail(24)
+    elif target_feature == 'production':
+        df_weather = df_weather.tail(48).head(24)
 
-    selected_features = [target_feature] + features
+    merged_df = pd.merge(df, df_weather, on='date', how='inner')
+
+    selected_features = [target_feature] + features + ['date']
+    merged_df = merged_df[selected_features]
 
     output_file = f'data/processed/{output_file_name}'
     if os.path.exists(output_file):
