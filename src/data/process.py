@@ -34,7 +34,7 @@ def merge_data(df, df_weather, target_feature, features, output_file_name):
 
     merged_df = pd.merge(df, df_weather, on='date', how='inner')
 
-    selected_features = [target_feature] + features + ['date']
+    selected_features = ['date'] + [target_feature] + features
     merged_df = merged_df[selected_features]
 
     output_file = f'data/processed/{output_file_name}'
