@@ -28,7 +28,7 @@ def merge_data(df, df_weather, target_feature, features, output_file_name):
 
     merged_df = pd.merge(df, df_weather, on='date')
 
-    # validate_merge(24, df, df_weather, target_feature)
+    # validate_merge(24, df, target_feature)
 
     selected_features = [target_feature] + features
 
@@ -39,10 +39,7 @@ def merge_data(df, df_weather, target_feature, features, output_file_name):
         merged_df[selected_features].to_csv(output_file, index=False)
 
 
-def validate_merge(window_size, df, df_weather, feature):
-    if df_weather.shape[0] != df.shape[0]:
-        raise ValueError("Number of rows in weather and price/production dataframe must be the same")
-
+def validate_merge(window_size, df, feature):
     check_data = []
     for file in os.listdir('data/processed'):
         if file.startswith(f"{feature}_") and file.endswith('.csv'):
