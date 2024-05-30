@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import pandas as pd
 import requests
 
@@ -25,10 +25,13 @@ class Fetcher:
 
         daily_price_data = []
         for i in range(len(data['price'])):
-            timestamp = datetime.fromtimestamp(data['unix_seconds'][i]).strftime('%Y-%m-%dT%H:%M:%S')
+            utc_timestamp = datetime.fromtimestamp(data['unix_seconds'][i], tz=timezone.utc)
+            local_timestamp = (utc_timestamp + timedelta(hours=2)).strftime('%Y-%m-%dT%H:%M:%S')
+            # timestamp = datetime.fromtimestamp(data['unix_seconds'][i]).strftime('%Y-%m-%dT%H:%M:%S')
+
             price = data['price'][i]
 
-            new_data = {'date': timestamp, 'price': price}
+            new_data = {'date': local_timestamp, 'price': price}
             daily_price_data.append(new_data)
 
         df = pd.DataFrame(daily_price_data)
@@ -85,9 +88,11 @@ class Fetcher:
             production_per_type = []
             for j in range(len(data['production_types'][i]['data'])):
                 production = data['production_types'][i]['data'][j]
-                timestamp = datetime.fromtimestamp(data['unix_seconds'][j]).strftime('%Y-%m-%dT%H:%M:%S')
+                utc_timestamp = datetime.fromtimestamp(data['unix_seconds'][i], tz=timezone.utc)
+                local_timestamp = (utc_timestamp + timedelta(hours=2)).strftime('%Y-%m-%dT%H:%M:%S')
+                # timestamp = datetime.fromtimestamp(data['unix_seconds'][j]).strftime('%Y-%m-%dT%H:%M:%S')
 
-                production_per_type.append({'date': timestamp, 'production': production})
+                production_per_type.append({'date': local_timestamp, 'production': production})
 
             df_production = pd.DataFrame(production_per_type)
 
