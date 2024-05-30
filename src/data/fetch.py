@@ -21,6 +21,8 @@ class Fetcher:
         response.raise_for_status()
         data = response.json()
 
+        print(f'[INFO] {len(data["price"])} price data points fetched for {self.date}')
+
         daily_price_data = []
         for i in range(len(data['price'])):
             timestamp = datetime.fromtimestamp(data['unix_seconds'][i]).strftime('%Y-%m-%dT%H:%M:%S')
@@ -66,6 +68,8 @@ class Fetcher:
         response = requests.get(self.production_url)
         response.raise_for_status()
         data = response.json()
+
+        print(f'[INFO] {len(data["production_types"][0]['data'])} production data points fetched for {self.past_date}')
 
         production_types = [
             'Cross border electricity trading',
