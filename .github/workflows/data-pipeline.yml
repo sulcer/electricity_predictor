@@ -2,7 +2,7 @@ name: Fetch and Process Data
 
 on:
   schedule:
-    - cron: '0 1 * * *'  # This runs the workflow at 1 AM every day
+    - cron: '0 4 * * *'  # This runs the workflow at 4 AM every day
   workflow_dispatch:
 
 env:
