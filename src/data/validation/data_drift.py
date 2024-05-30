@@ -4,6 +4,7 @@ from evidently.report import Report
 from evidently.metric_preset import DataDriftPreset
 
 if __name__ == "__main__":
+    print("[INFO]: Running Evidently checkpoint validation")
     report = Report(metrics=[DataDriftPreset()])
 
     for file in os.listdir("data/processed"):

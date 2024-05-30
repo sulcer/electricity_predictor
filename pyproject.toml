@@ -9,6 +9,7 @@ readme = "README.md"
 serve = "uvicorn src.serve.main:app --reload"
 fetch = "python3 -m src.data.fetch"
 process = "python3 -m src.data.process"
+validate = "python3 -m src.data.validation.run_checkpoint"
 data_drift = "python3 -m src.data.validation.data_drift"
 
 [tool.poetry.dependencies]

@@ -5,9 +5,9 @@ from great_expectations.checkpoint.types.checkpoint_result import CheckpointResu
 
 def main():
     context = ge.get_context()
-    result: CheckpointResult = context.run_checkpoint(checkpoint_name="mbajk_checkpoint")
+    result: CheckpointResult = context.run_checkpoint(checkpoint_name="price_data_checkpoint")
 
-    print("[INFO]: Running Evidently checkpoint validation")
+    print("[INFO]: Running GX checkpoint validation")
 
     if not result["success"]:
         print("[Validate]: Checkpoint validation failed!")
