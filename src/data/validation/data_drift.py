@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from evidently.report import Report
 from evidently.metric_preset import DataDriftPreset
@@ -5,9 +6,16 @@ from evidently.metric_preset import DataDriftPreset
 if __name__ == "__main__":
     report = Report(metrics=[DataDriftPreset()])
 
-    current = pd.read_csv("data/processed/price_data.csv")
-    reference = pd.read_csv("data/processed/reference_price_data.csv")
+    for file in os.listdir("data/processed"):
+        if file.startswith("reference_") and file.endswith(".csv"):
+            file = file.replace("reference_", "")
+            drift_subject = file.replace(".csv", "")
 
-    report.run(reference_data=reference, current_data=current)
+            print(f"[INFO]: Running data drift validation for {drift_subject}")
 
-    report.save_html("reports/sites/price_data_drift.html")
+            current = pd.read_csv(f"data/processed/{file}")
+            reference = pd.read_csv(f"data/processed/reference_{file}")
+
+            report.run(reference_data=reference, current_data=current)
+
+            report.save_html(f'reports/sites/{drift_subject}_drift.html')
