@@ -88,7 +88,7 @@ class Fetcher:
             production_per_type = []
             for j in range(len(data['production_types'][i]['data'])):
                 production = data['production_types'][i]['data'][j]
-                utc_timestamp = datetime.fromtimestamp(data['unix_seconds'][i], tz=timezone.utc)
+                utc_timestamp = datetime.fromtimestamp(data['unix_seconds'][j], tz=timezone.utc)
                 local_timestamp = (utc_timestamp + timedelta(hours=2)).strftime('%Y-%m-%dT%H:%M:%S')
                 # timestamp = datetime.fromtimestamp(data['unix_seconds'][j]).strftime('%Y-%m-%dT%H:%M:%S')
 
