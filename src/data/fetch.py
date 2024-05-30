@@ -38,7 +38,7 @@ class Fetcher:
             df.to_csv(csv_file, mode='a', header=False, index=False)
 
     def fetch_weather_data(self):
-        response = requests.get('https://api.open-meteo.com/v1/forecast?latitude=46.0833&longitude=15&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,cloud_cover,wind_speed_10m&timezone=Europe%2FBerlin&past_days=1&forecast_days=1')
+        response = requests.get(self.weather_url)
         response.raise_for_status()
         data = response.json()['hourly']
 
