@@ -17,7 +17,6 @@ def ks_test(sample1, sample2):
 
 
 def impute_missing_values(df):
-    # Impute missing values with the median of each column
     df.drop(columns=["date"], inplace=True)
     return df.apply(lambda x: x.fillna(x.median()), axis=0)
 
