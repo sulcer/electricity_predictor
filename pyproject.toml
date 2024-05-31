@@ -11,6 +11,8 @@ fetch = "python3 -m src.data.fetch"
 process = "python3 -m src.data.process"
 validate = "python3 -m src.data.validation.run_checkpoint"
 data_drift = "python3 -m src.data.validation.data_drift"
+stability_tests = "python3 -m src.data.validation.stability_tests"
+ks_test = "python3 -m src.data.validation.ks"
 
 [tool.poetry.dependencies]
 python = "^3.12"
