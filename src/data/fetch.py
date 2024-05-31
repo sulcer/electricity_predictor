@@ -103,6 +103,21 @@ class Fetcher:
             else:
                 df_production.to_csv(csv_file, mode='a', header=False, index=False)
 
+    def ping_weather_api(self):
+        response = requests.get(self.weather_url)
+        response.raise_for_status()
+        return response.json()
+
+    def ping_price_api(self):
+        response = requests.get(self.price_url)
+        response.raise_for_status()
+        return response.json()
+
+    def ping_production_api(self):
+        response = requests.get(self.production_url)
+        response.raise_for_status()
+        return response.json()
+
 
 def main():
     fetcher = Fetcher()
