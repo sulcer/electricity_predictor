@@ -1,35 +1,34 @@
-import joblib
+import os
 import pandas as pd
-import tensorflow as tf
-import tf2onnx
 from sklearn.preprocessing import MinMaxScaler
-from src.config import settings
-from src.models.helpers.price_prediction.model import train_model
-from src.models.helpers.price_prediction.preprocessing import preprocess_data
+from src.models.helpers.common import preprocess_data, save_model
+from src.models.helpers.price_prediction import price_model
+from src.models.helpers.production_prediction import production_model
 
 
 def run_model():
-    data = pd.read_csv("data/processed/price_data.csv")
-    scaler = MinMaxScaler()
+    for file in os.listdir("data/processed"):
+        if not file.startswith("reference_") and file.endswith(".csv"):
+            print(f"[INFO]: Running model training for {file}")
 
-    X_train, y_train, X_test, y_test = preprocess_data(data, scaler)
+            data = pd.read_csv(f"data/processed/{file}")
+            scaler = MinMaxScaler()
 
-    model = train_model(X_train, y_train, X_test, y_test)
+            X_train, y_train, X_test, y_test = preprocess_data(data, scaler)
 
-    model.output_names = ["output"]
+            train_subject = file.split('_')
+            directory = file.replace("_data.csv", "")
 
-    input_signature = [
-        tf.TensorSpec(shape=(None, settings.window_size, (len(settings.features) + 1)), dtype=tf.double, name="input")
-    ]
+            if train_subject == 'price':
+                print("Training price model")
+                model = price_model(X_train, y_train, X_test, y_test)
+                save_model(model, scaler, directory)
+            elif train_subject == 'production':
+                print("Training production model")
+                model = production_model(X_train, y_train, X_test, y_test)
+                save_model(model, scaler, directory)
 
-    onnx_model, _ = tf2onnx.convert.from_keras(model=model, input_signature=input_signature, opset=13)
-
-    joblib.dump(scaler, f"models/scaler/minmax.pkl")
-
-    with open(f"models/model.onnx", "wb") as f:
-        f.write(onnx_model.SerializeToString())
-
-    print("Training model finished")
+    print("Training models finished")
 
 
 if __name__ == "__main__":
