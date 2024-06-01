@@ -14,7 +14,7 @@ data_drift = "python3 -m src.data.validation.data_drift"
 stability_tests = "python3 -m src.data.validation.stability_tests"
 ks_test = "python3 -m src.data.validation.ks"
 lint = "ruff check ."
-test = "pytest src/serve"
+test = "pytest src/serve/"
 
 [tool.poetry.dependencies]
 python = "^3.12"

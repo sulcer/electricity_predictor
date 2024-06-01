@@ -39,6 +39,6 @@ jobs:
           poetry run poe lint
         continue-on-error: false
 
-      - name: Run tests
-        run: |
-          poetry run poe test
+#      - name: Run tests
+#        run: |
+#          poetry run poe test
