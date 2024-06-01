@@ -10,9 +10,8 @@ from src.models.helpers.production_prediction import production_model
 def run_model():
     for file in os.listdir("data/processed"):
         if not file.startswith("reference_") and file.endswith(".csv"):
-            train_subject = file.split('_')
-            directory = file.replace("_data.csv", "")
-            logger.info(f"Running model training for {directory}")
+            train_subject = file.replace("_data.csv", "")
+            logger.info(f"Running model training for {train_subject}")
 
             data = pd.read_csv(f"data/processed/{file}")
             scaler = MinMaxScaler()
@@ -21,10 +20,10 @@ def run_model():
 
             if train_subject == 'price':
                 model = price_model(X_train, y_train, X_test, y_test)
-                save_model(model, scaler, directory)
-            elif train_subject == 'production':
+                save_model(model, scaler, train_subject)
+            elif 'production' in train_subject:
                 model = production_model(X_train, y_train, X_test, y_test)
-                save_model(model, scaler, directory)
+                save_model(model, scaler, train_subject)
 
     logger.info("Training models finished")
 
