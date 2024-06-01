@@ -1,9 +1,17 @@
 import pathlib
+from typing import List
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     window_size: int = 24
+    features: List[str] = [
+        'temperature',
+        'humidity',
+        'precipitation',
+        'cloud_cover',
+        'wind_speed'
+    ]
 
     # dagshub configuration
     mlflow_tracking_username: str

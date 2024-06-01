@@ -15,6 +15,7 @@ stability_tests = "python3 -m src.data.validation.stability_tests"
 ks_test = "python3 -m src.data.validation.ks"
 lint = "ruff check ."
 test = "pytest src/serve/"
+train = "python3 -m src.models.train_model"
 
 [tool.poetry.dependencies]
 python = "^3.12"
