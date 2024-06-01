@@ -8,6 +8,7 @@ from keras import Sequential
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 from src.config import settings
+import onnxruntime as ort
 
 
 def create_test_train_split(dataset: pd.DataFrame, split_size=0.1) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -56,7 +57,15 @@ def save_model(model: Sequential, scaler: MinMaxScaler, directory: str):
     if not os.path.exists(f"models/{directory}"):
         os.makedirs(f"models/{directory}")
 
-    joblib.dump(scaler, f"models/{directory}/minmax.pkl")
+    joblib.dump(scaler, f"models/{directory}/scaler.pkl")
 
     with open(f"models/{directory}/model.onnx", "wb") as f:
         f.write(onnx_model.SerializeToString())
+
+
+def load_onnx_model(path: str) -> ort.InferenceSession:
+    return ort.InferenceSession(path)
+
+
+def load_scaler(path: str) -> MinMaxScaler:
+    return joblib.load(path)
