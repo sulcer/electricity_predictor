@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
+from src.logger_config import logger
 from src.models.helpers.common import preprocess_data, save_model
 from src.models.helpers.price_prediction import price_model
 from src.models.helpers.production_prediction import production_model
@@ -28,7 +29,7 @@ def run_model():
                 model = production_model(X_train, y_train, X_test, y_test)
                 save_model(model, scaler, directory)
 
-    print("Training models finished")
+    logger.info("Training models finished")
 
 
 if __name__ == "__main__":
