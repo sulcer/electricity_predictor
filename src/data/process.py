@@ -45,7 +45,7 @@ def merge_data(df, df_weather, target_feature, features, output_file_name):
 
 
 def validate_merge(window_size, df, file_name):
-    print(f"[INFO] {file_name}")
+    print(f"{file_name}")
     check_data_path = f'data/processed/{file_name}'
     if os.path.exists(check_data_path):
         check_data = pd.read_csv(check_data_path)
@@ -55,8 +55,8 @@ def validate_merge(window_size, df, file_name):
     num_of_processed_fetches = len(check_data) / window_size
     num_of_fetches = len(df) / window_size
 
-    print("[INFO] Number of processed fetches", num_of_processed_fetches)
-    print("[INFO] Number of fetches", num_of_fetches)
+    print("Number of processed fetches", num_of_processed_fetches)
+    print("Number of fetches", num_of_fetches)
 
     if num_of_fetches <= num_of_processed_fetches:
         raise ValueError("Cannot merge data, if no new data has been fetched")

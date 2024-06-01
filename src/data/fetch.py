@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timedelta, timezone
 import pandas as pd
 import requests
+from src.logger_config import logger
 
 
 class Fetcher:
@@ -21,13 +22,13 @@ class Fetcher:
         response.raise_for_status()
         data = response.json()
 
-        print(f'[INFO] {len(data["price"])} price data points fetched for {self.date}')
+        logger.info(f"{len(data['price'])} price data points fetched for {self.date}")
 
         daily_price_data = []
         for i in range(len(data['price'])):
             utc_timestamp = datetime.fromtimestamp(data['unix_seconds'][i], tz=timezone.utc)
             local_timestamp = (utc_timestamp + timedelta(hours=2)).strftime('%Y-%m-%dT%H:%M:%S')
-            # timestamp = datetime.fromtimestamp(data['unix_seconds'][i]).strftime('%Y-%m-%dT%H:%M:%S')
+            # timestamp = datetime.fromtimestamp(data['unix_seconds'][i]).strftime('%Y-%m-%dT%H:%M:%S') # run local
 
             price = data['price'][i]
 
@@ -46,6 +47,8 @@ class Fetcher:
         response = requests.get(self.weather_url)
         response.raise_for_status()
         data = response.json()['hourly']
+
+        logger.info(f"{len(data['time'])} weather data points fetched at {self.date}")
 
         daily_weather_data = []
         for i in range(len(data['time'])):
@@ -72,7 +75,7 @@ class Fetcher:
         response.raise_for_status()
         data = response.json()
 
-        print(f'[INFO] {len(data["production_types"][0]['data'])} production data points fetched for {self.past_date}')
+        logger.info(f"{len(data['production_types'][0]['data'])} production data points fetched for {self.past_date}")
 
         production_types = [
             'Cross border electricity trading',
@@ -90,7 +93,7 @@ class Fetcher:
                 production = data['production_types'][i]['data'][j]
                 utc_timestamp = datetime.fromtimestamp(data['unix_seconds'][j], tz=timezone.utc)
                 local_timestamp = (utc_timestamp + timedelta(hours=2)).strftime('%Y-%m-%dT%H:%M:%S')
-                # timestamp = datetime.fromtimestamp(data['unix_seconds'][j]).strftime('%Y-%m-%dT%H:%M:%S')
+                # timestamp = datetime.fromtimestamp(data['unix_seconds'][j]).strftime('%Y-%m-%dT%H:%M:%S') # run local
 
                 production_per_type.append({'date': local_timestamp, 'production': production})
 

@@ -2,6 +2,7 @@ import os
 import great_expectations as ge
 import pandas as pd
 from great_expectations.checkpoint.types.checkpoint_result import CheckpointResult
+from src.logger_config import logger
 
 
 def main():
@@ -11,15 +12,15 @@ def main():
         if not file.startswith("reference_") and file.endswith(".csv"):
             expectation_subject = file.replace(".csv", "")
 
-            print(f"[INFO]: Running GX checkpoint validation for {expectation_subject}")
+            logger.info(f"Running GX checkpoint validation for {expectation_subject}")
 
             result: CheckpointResult = context.run_checkpoint(checkpoint_name=f"{expectation_subject}_checkpoint")
 
             if not result["success"]:
-                print(f"[Validate]: GX checkpoint validation for {expectation_subject} failed!")
+                logger.error(f"GX checkpoint validation for {expectation_subject} failed!")
                 # raise ValueError("Checkpoint failed")
             elif result["success"]:
-                print(f"[Validate]: GX checkpoint validation for {expectation_subject} successful!")
+                logger.info(f"GX checkpoint validation for {expectation_subject} successful!")
 
             current_data = pd.read_csv(f"data/processed/{file}")
             reference_data_path = f"data/processed/reference_{file}"

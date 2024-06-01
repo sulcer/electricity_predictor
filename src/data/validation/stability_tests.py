@@ -1,8 +1,8 @@
 import os
-
 import pandas as pd
 from evidently.test_preset import DataStabilityTestPreset
 from evidently.test_suite import TestSuite
+from src.logger_config import logger
 
 if __name__ == "__main__":
     tests = TestSuite(tests=[
@@ -13,7 +13,7 @@ if __name__ == "__main__":
         if not file.startswith("reference_") and file.endswith(".csv"):
             tests_subject = file.replace(".csv", "")
 
-            print(f"[INFO]: Running Stability test for {tests_subject}")
+            logger.info(f"Running Stability test for {tests_subject}")
 
             current_data = pd.read_csv(f"data/processed/{file}")
             reference_data = pd.read_csv(f"data/processed/reference_{file}")

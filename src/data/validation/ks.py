@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+from src.logger_config import logger
 
 
 def ks_test(sample1, sample2):
@@ -28,7 +29,7 @@ if __name__ == "__main__":
         if not file.startswith("reference_") and file.endswith(".csv"):
             tests_subject = file.replace(".csv", "")
 
-            print(f"[INFO]: Running Kolmogorov Smirnov test for {tests_subject}")
+            logger.info(f"Running Kolmogorov Smirnov test for {tests_subject}")
 
             current_data = pd.read_csv(f"data/processed/{file}")
             reference_data = pd.read_csv(f"data/processed/reference_{file}")
@@ -39,6 +40,6 @@ if __name__ == "__main__":
             for column in current_data.columns:
                 d, p_value = ks_test(current_data[column], reference_data[column])
                 if p_value < alpha:
-                    print(f"Data drift detected in column {column} with p-value {p_value}")
+                    logger.warning(f"Data drift detected in column {column} with p-value {p_value}")
                 else:
-                    print(f"No data drift detected in column {column} with p-value {p_value}")
+                    logger.info(f"No data drift detected in column {column} with p-value {p_value}")
