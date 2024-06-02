@@ -5,11 +5,15 @@ import numpy as np
 import pandas as pd
 import tf2onnx
 from keras import Sequential
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
 from sklearn.metrics import mean_squared_error, mean_absolute_error, explained_variance_score
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 from src.config import settings
 import onnxruntime as ort
+from src.logger_config import logger
 
 
 def create_test_train_split(dataset: pd.DataFrame, split_size=0.1) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -29,7 +33,7 @@ def create_time_series(data: pd.DataFrame, n_past: int) -> Tuple[np.ndarray, np.
 
 
 def preprocess_data(data: pd.DataFrame, scaler: MinMaxScaler) -> Tuple[np.array, np.array, np.array, np.array]:
-    data.drop('date', axis=1, inplace=True)
+    # data.drop('date', axis=1, inplace=True)
 
     print(data.head())
 
@@ -97,3 +101,33 @@ def write_evaluation_metrics_to_file(model_name: str, mse: float, mae: float, ev
         file.write(f"Train MSE: {mse}\n")
         file.write(f"Train MAE: {mae}\n")
         file.write(f"Train EVS: {evs}\n")
+
+
+def run_sklearn_pipeline(data: pd.DataFrame) -> pd.DataFrame:
+    data.drop('date', axis=1, inplace=True)
+
+    if data.isnull().values.any():
+        logger.warning("Missing data in row")
+        numeric_features = data.select_dtypes(include=['int64', 'float64']).columns
+        categorical_features = data.select_dtypes(include=['object']).columns
+
+        numerical_transformer = Pipeline(steps=[
+            ('imputer', SimpleImputer(strategy='mean'))
+        ])
+
+        categorical_transformer = Pipeline(steps=[
+            ('imputer', SimpleImputer(strategy='most_frequent'))
+        ])
+
+        preprocessor = ColumnTransformer(
+            transformers=[
+                ('num', numerical_transformer, numeric_features),
+                ('cat', categorical_transformer, categorical_features)
+            ])
+
+        pipeline = Pipeline(steps=[
+            ('preprocessor', preprocessor)
+        ])
+
+        transformed_data = pipeline.fit_transform(data)
+        return transformed_data

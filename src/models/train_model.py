@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from src.logger_config import logger
-from src.models.helpers.common import preprocess_data, save_model
+from src.models.helpers.common import preprocess_data, save_model, run_sklearn_pipeline
 from src.models.helpers.price_prediction import price_model
 from src.models.helpers.production_prediction import production_model
 
@@ -14,16 +14,22 @@ def run_model():
             logger.info(f"Running model training for {train_subject}")
 
             data = pd.read_csv(f"data/processed/{file}")
+
+            run_sklearn_pipeline(data)
+
             scaler = MinMaxScaler()
+
+            print(data.head())
+            print(data.isnull().sum())
 
             X_train, y_train, X_test, y_test = preprocess_data(data, scaler)
 
-            if train_subject == 'price':
-                model = price_model(X_train, y_train, X_test, y_test)
-                save_model(model, scaler, train_subject)
-            elif 'production' in train_subject:
-                model = production_model(X_train, y_train, X_test, y_test)
-                save_model(model, scaler, train_subject)
+            # if train_subject == 'price':
+            #     model = price_model(X_train, y_train, X_test, y_test)
+            #     save_model(model, scaler, train_subject)
+            # elif 'production' in train_subject:
+            #     model = production_model(X_train, y_train, X_test, y_test)
+            #     save_model(model, scaler, train_subject)
 
     logger.info("Training models finished")
 

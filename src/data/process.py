@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import pandas as pd
 
 
@@ -37,6 +38,9 @@ def merge_data(df, df_weather, target_feature, features, output_file_name):
     selected_features = ['date'] + [target_feature] + features
     merged_df = merged_df[selected_features]
 
+    if merged_df.isnull().values.any():
+        merged_df = impute(merged_df)
+
     output_file = f'data/processed/{output_file_name}'
     if os.path.exists(output_file):
         merged_df[selected_features].to_csv(output_file, mode='a', header=False, index=False)
@@ -60,6 +64,13 @@ def validate_merge(window_size, df, file_name):
 
     if num_of_fetches <= num_of_processed_fetches:
         raise ValueError("Cannot merge data, if no new data has been fetched")
+
+
+def impute(data):
+    numerical_columns = data.select_dtypes(include=[np.number]).columns
+    data[numerical_columns] = data[numerical_columns].fillna(data[numerical_columns].mean())
+
+    return data
 
 
 if __name__ == '__main__':
