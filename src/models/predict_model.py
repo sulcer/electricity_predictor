@@ -1,10 +1,8 @@
 import os
-import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error, mean_absolute_error, explained_variance_score
-from src.config import settings
 from src.logger_config import logger
-from src.models.helpers.common import preprocess_data, load_onnx_model, load_scaler
+from src.models.helpers.common import preprocess_data, load_onnx_model, load_scaler, evaluate_model, \
+    write_evaluation_metrics_to_file
 
 
 def predict_model():
@@ -23,23 +21,16 @@ def predict_model():
             input_names = model.get_inputs()[0].name
             output_names = model.get_outputs()[0].name
 
-            predicted = model.run([output_names], {input_names: X_test})[0]
+            predictions = model.run([output_names], {input_names: X_test})[0]
 
-            predicted_copy_array = np.repeat(predicted, (len(settings.features) + 1), axis=-1)
+            mse_latest, mae_latest, evs_latest = evaluate_model(y_test, predictions, scaler)
 
-            pred = scaler.inverse_transform(
-                np.reshape(predicted_copy_array, (len(predicted), (len(settings.features) + 1))))[:, 0]
-            actual_copy_array = np.repeat(y_test, (len(settings.features) + 1), axis=-1)
-            actual = scaler.inverse_transform(
-                np.reshape(actual_copy_array, (len(y_test), (len(settings.features) + 1))))[:, 0]
+            print(f'MSE: {mse_latest:.2f}')
+            print(f'MAE: {mae_latest:.2f}')
+            print(f'EVS: {evs_latest:.2f}')
 
-            mse = mean_squared_error(actual, pred)
-            mae = mean_absolute_error(actual, pred)
-            evs = explained_variance_score(actual, pred)
-
-            print(f'MSE: {mse:.2f}')
-            print(f'MAE: {mae:.2f}')
-            print(f'EVS: {evs:.2f}')
+            write_evaluation_metrics_to_file("GRU", mse_latest, mae_latest, evs_latest,
+                                             f"reports/{prediction_subject}/latest_metrics.txt")
 
 
 if __name__ == "__main__":

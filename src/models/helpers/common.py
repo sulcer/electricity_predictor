@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import tf2onnx
 from keras import Sequential
+from sklearn.metrics import mean_squared_error, mean_absolute_error, explained_variance_score
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 from src.config import settings
@@ -69,3 +70,30 @@ def load_onnx_model(path: str) -> ort.InferenceSession:
 
 def load_scaler(path: str) -> MinMaxScaler:
     return joblib.load(path)
+
+
+def evaluate_model(y_actual: np.array, predicted: np.array, scaler: MinMaxScaler) -> Tuple[float, float, float]:
+    predicted_copy_array = np.repeat(predicted, (len(settings.features) + 1), axis=-1)
+    pred = scaler.inverse_transform(
+        np.reshape(predicted_copy_array, (len(predicted), (len(settings.features) + 1))))[:, 0]
+
+    actual_copy_array = np.repeat(y_actual, (len(settings.features) + 1), axis=-1)
+    actual = scaler.inverse_transform(
+        np.reshape(actual_copy_array, (len(y_actual), (len(settings.features) + 1))))[:, 0]
+
+    mse = mean_squared_error(actual, pred)
+    mae = mean_absolute_error(actual, pred)
+    evs = explained_variance_score(actual, pred)
+
+    return mse, mae, evs
+
+
+def write_evaluation_metrics_to_file(model_name: str, mse: float, mae: float, evs: float, file_path: str):
+    if not os.path.exists(os.path.dirname(file_path)):
+        os.makedirs(os.path.dirname(file_path))
+
+    with open(file_path, "w") as file:
+        file.write(f"Model: {model_name}\n")
+        file.write(f"Train MSE: {mse}\n")
+        file.write(f"Train MAE: {mae}\n")
+        file.write(f"Train EVS: {evs}\n")
