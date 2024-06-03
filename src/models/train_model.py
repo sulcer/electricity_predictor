@@ -19,17 +19,16 @@ def run_model():
 
             scaler = MinMaxScaler()
 
-            print(data.head())
             print(data.isnull().sum())
 
             X_train, y_train, X_test, y_test = preprocess_data(data, scaler)
 
-            # if train_subject == 'price':
-            #     model = price_model(X_train, y_train, X_test, y_test)
-            #     save_model(model, scaler, train_subject)
-            # elif 'production' in train_subject:
-            #     model = production_model(X_train, y_train, X_test, y_test)
-            #     save_model(model, scaler, train_subject)
+            if train_subject == 'price':
+                model = price_model(X_train, y_train, X_test, y_test)
+                save_model(model, scaler, train_subject)
+            elif 'production' in train_subject:
+                model = production_model(X_train, y_train, X_test, y_test)
+                save_model(model, scaler, train_subject)
 
     logger.info("Training models finished")
 

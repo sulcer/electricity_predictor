@@ -33,7 +33,7 @@ def create_time_series(data: pd.DataFrame, n_past: int) -> Tuple[np.ndarray, np.
 
 
 def preprocess_data(data: pd.DataFrame, scaler: MinMaxScaler) -> Tuple[np.array, np.array, np.array, np.array]:
-    # data.drop('date', axis=1, inplace=True)
+    data.drop('date', axis=1, inplace=True)
 
     print(data.head())
 
@@ -104,25 +104,17 @@ def write_evaluation_metrics_to_file(model_name: str, mse: float, mae: float, ev
 
 
 def run_sklearn_pipeline(data: pd.DataFrame) -> pd.DataFrame:
-    data.drop('date', axis=1, inplace=True)
-
     if data.isnull().values.any():
         logger.warning("Missing data in row")
         numeric_features = data.select_dtypes(include=['int64', 'float64']).columns
-        categorical_features = data.select_dtypes(include=['object']).columns
 
         numerical_transformer = Pipeline(steps=[
             ('imputer', SimpleImputer(strategy='mean'))
         ])
 
-        categorical_transformer = Pipeline(steps=[
-            ('imputer', SimpleImputer(strategy='most_frequent'))
-        ])
-
         preprocessor = ColumnTransformer(
             transformers=[
-                ('num', numerical_transformer, numeric_features),
-                ('cat', categorical_transformer, categorical_features)
+                ('num', numerical_transformer, numeric_features)
             ])
 
         pipeline = Pipeline(steps=[
