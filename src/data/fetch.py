@@ -13,8 +13,8 @@ class Fetcher:
         self.production_url = \
             f'https://api.energy-charts.info/public_power?country=si&start={self.past_date}&end={self.past_date}'
         self.weather_url = ("https://api.open-meteo.com/v1/forecast?latitude=46.0833&longitude=15&hourly"
-                            "=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,cloud_cover,"
-                            "wind_speed_10m&timezone=Europe%2FBerlin&forecast_days=1")
+                            "=temperature_2m,relative_humidity_2m,precipitation,cloud_cover,"
+                            "wind_speed_10m&timezone=Europe%2FBerlin")
         self.data_path = "data"
 
     def fetch_price_data(self):
@@ -44,7 +44,9 @@ class Fetcher:
             df.to_csv(csv_file, mode='a', header=False, index=False)
 
     def fetch_weather_data(self):
-        response = requests.get(self.weather_url)
+        weather_url = self.weather_url + "&forecast_days=1"
+
+        response = requests.get(weather_url)
         response.raise_for_status()
         data = response.json()['hourly']
 
@@ -105,6 +107,19 @@ class Fetcher:
                 df_production.to_csv(csv_file, index=False)
             else:
                 df_production.to_csv(csv_file, mode='a', header=False, index=False)
+
+    def fetch_weather_forcast(self):
+        weather_forcast_url = self.weather_url + "&forecast_days=2"
+
+        response = requests.get(weather_forcast_url)
+        response.raise_for_status()
+
+        forcast = response.json()['hourly']
+
+        for key in forcast.keys():
+            forcast[key] = forcast[key][24:]
+
+        return forcast
 
     def ping_weather_api(self):
         response = requests.get(self.weather_url)
