@@ -27,11 +27,11 @@ def predict(model_type: str, n_time_units: int):
     fetcher = Fetcher()
     forcast = fetcher.fetch_weather_forcast()
 
-    model = ort.InferenceSession(f"models/price/model.onnx")
-    scaler: MinMaxScaler = joblib.load(f"models/price/scaler.pkl")
+    model = ort.InferenceSession(f"models/{model_type}/model.onnx")
+    scaler: MinMaxScaler = joblib.load(f"models/{model_type}/scaler.pkl")
 
     data_service = DataService()
-    dataset = data_service.get_price_data()
+    dataset = data_service.get_data(model_type)
 
     print(forcast)
 
@@ -46,14 +46,12 @@ def predict(model_type: str, n_time_units: int):
         prediction = use_model_prediction(X, model, scaler, feature_cols)
         predictions.append(prediction)
 
-        forcast_index = n + 1
-
         new_row = [prediction,
-                   forcast["temperature_2m"][forcast_index],
-                   forcast["relative_humidity_2m"][forcast_index],
-                   forcast["precipitation"][forcast_index],
-                   forcast["cloud_cover"][forcast_index],
-                   forcast["wind_speed_10m"][forcast_index]]
+                   forcast["temperature_2m"][n],
+                   forcast["relative_humidity_2m"][n],
+                   forcast["precipitation"][n],
+                   forcast["cloud_cover"][n],
+                   forcast["wind_speed_10m"][n]]
 
         print(new_row)
         last_rows.pop(0)
