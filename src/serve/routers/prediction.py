@@ -1,11 +1,11 @@
 import joblib
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 import onnxruntime as ort
 from sklearn.preprocessing import MinMaxScaler
 
 from src.config import settings
 from src.data.fetch import Fetcher
-from src.serve.helpers.common import create_time_series, use_model_prediction
+from src.serve.helpers.common import create_time_series, use_model_prediction, get_model_types
 from src.serve.services.data_service import DataService
 
 router = APIRouter(
@@ -18,6 +18,12 @@ window_size = settings.window_size
 
 @router.get("/predict/{model_type}/{n_time_units}")
 def predict(model_type: str, n_time_units: int):
+    if model_type not in get_model_types():
+        raise HTTPException(status_code=400, detail=f"Model type {model_type} not found")
+
+    if n_time_units < 1 or n_time_units > 24:
+        raise HTTPException(status_code=400, detail=f"Number of future time units must be between 1 and 24")
+
     fetcher = Fetcher()
     forcast = fetcher.fetch_weather_forcast()
 

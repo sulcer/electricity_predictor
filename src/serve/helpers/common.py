@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 
 
@@ -20,3 +22,13 @@ def use_model_prediction(data, model, scaler, feature_cols):
     prediction = scaler.inverse_transform(prediction_reshaped)[:, 0]
 
     return int(prediction.tolist()[0])
+
+
+def get_model_types():
+    model_types = ['price',
+                   'production_cross',
+                   'production_fossil',
+                   'production_hydro',
+                   'production_nuclear']
+
+    return model_types
