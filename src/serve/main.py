@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
-from .routers import health_router, prediction_router
+from .routers import health_router, prediction_router, price_router, production_router
 
 app = FastAPI()
 
@@ -16,6 +16,8 @@ app.add_middleware(
 
 app.include_router(health_router)
 app.include_router(prediction_router)
+app.include_router(price_router)
+app.include_router(production_router)
 
 
 @app.get("/")

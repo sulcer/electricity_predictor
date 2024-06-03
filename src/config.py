@@ -12,6 +12,12 @@ class Settings(BaseSettings):
         'cloud_cover',
         'wind_speed'
     ]
+    production_types: List[str] = [
+        'cross',
+        'nuclear',
+        'hydro',
+        'fossil',
+    ]
 
     # dagshub configuration
     mlflow_tracking_username: str

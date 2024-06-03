@@ -3,7 +3,6 @@ from sklearn.preprocessing import MinMaxScaler
 from src.config import settings
 from src.data.fetch import Fetcher
 import onnxruntime as ort
-
 from src.serve.helpers.common import create_time_series, use_model_prediction
 from src.serve.services.data_service import DataService
 
