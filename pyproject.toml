@@ -17,6 +17,7 @@ lint = "ruff check ."
 test = "pytest src/serve/"
 train = "python3 -m src.models.train_model"
 predict = "python3 -m src.models.predict_model"
+validate_predictions = "python3 -m src.data.validation.validate_predictions"
 
 [tool.poetry.dependencies]
 python = "^3.12"

@@ -24,10 +24,7 @@ def main():
         document_count = collection.count_documents({})
         print("num of docs", document_count)
 
-        latest_prediction_index = document_count - 1
-
-        if model_type == "price":
-            latest_prediction_index -= 1
+        latest_prediction_index = document_count - 2
 
         date = all_documents[latest_prediction_index]["date"]
         latest_document = all_documents[latest_prediction_index]
@@ -59,9 +56,9 @@ def main():
             errors.append(error)
 
         mean_error = np.mean(errors)
-        print(f"Mean error for price: {mean_error}")
+        print(f"Mean error for {model_type}: {mean_error}")
         mean_squared_error = np.mean(np.square(errors))
-        print(f"Mean squared error for price: {mean_squared_error}")
+        print(f"Mean squared error for {model_type}: {mean_squared_error}")
 
         mlflow.log_metric("mean_error", mean_error)
         mlflow.log_metric("mean_squared_error", mean_squared_error)
