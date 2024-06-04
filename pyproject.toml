@@ -43,6 +43,8 @@ tf-keras = "^2.16.0"
 tensorflow-model-optimization = "^0.8.0"
 cachetools = "^5.3.3"
 sqlalchemy = "^2.0.29"
+pymongo = "^4.7.2"
+apscheduler = "^3.10.4"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.2"

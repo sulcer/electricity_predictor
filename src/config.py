@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     dagshub_user_token: str
     dagshub_repo_name: str
 
+    # mongodb configuration
+    mongo_db_uri: str
+
     __project_root = pathlib.Path(__file__).resolve().parent.parent
 
     model_config = SettingsConfigDict(env_file=f"{__project_root}/.env")
