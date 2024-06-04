@@ -8,13 +8,10 @@ from src.models.helpers.production_prediction import production_model
 import dagshub
 from dagshub.data_engine.datasources import mlflow
 import dagshub.auth as dh_auth
-from mlflow import MlflowClient
 from src.config import settings
 
 
 def run_model():
-    client = MlflowClient()
-
     for file in os.listdir("data/processed"):
         if not file.startswith("reference_") and file.endswith(".csv"):
             train_subject = file.replace("_data.csv", "")
@@ -34,10 +31,10 @@ def run_model():
 
             if train_subject == 'price':
                 model = price_model(X_train, y_train, X_test, y_test)
-                save_model(model, scaler, train_subject)
+                save_model(model, scaler, train_subject, X_test)
             elif 'production' in train_subject:
                 model = production_model(X_train, y_train, X_test, y_test)
-                save_model(model, scaler, train_subject)
+                save_model(model, scaler, train_subject, X_test)
 
             logger.info(f"Model for {train_subject} trained")
             mlflow.end_run()

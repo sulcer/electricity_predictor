@@ -18,6 +18,13 @@ class Settings(BaseSettings):
         'hydro',
         'fossil',
     ]
+    prediction_subjects: List[str] = [
+        'price',
+        'production_cross',
+        'production_fossil',
+        'production_hydro',
+        'production_nuclear',
+    ]
 
     # dagshub configuration
     mlflow_tracking_username: str

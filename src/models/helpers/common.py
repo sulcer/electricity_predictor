@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 import tf2onnx
 from keras import Sequential
+from mlflow import MlflowClient
+from mlflow.models import infer_signature
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import mean_squared_error, mean_absolute_error, explained_variance_score
@@ -14,6 +16,8 @@ import tensorflow as tf
 from src.config import settings
 import onnxruntime as ort
 from src.logger_config import logger
+from mlflow.onnx import log_model as log_onnx_model
+from mlflow.sklearn import log_model as log_sklearn_model
 
 
 def create_test_train_split(dataset: pd.DataFrame, split_size=0.1) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -50,7 +54,9 @@ def preprocess_data(data: pd.DataFrame, scaler: MinMaxScaler) -> Tuple[np.array,
     return X_train, y_train, X_test, y_test
 
 
-def save_model(model: Sequential, scaler: MinMaxScaler, directory: str):
+def save_model(model: Sequential, scaler: MinMaxScaler, directory: str, X_test: np.array):
+    client = MlflowClient()
+
     model.output_names = ["output"]
 
     input_signature = [
@@ -59,13 +65,34 @@ def save_model(model: Sequential, scaler: MinMaxScaler, directory: str):
 
     onnx_model, _ = tf2onnx.convert.from_keras(model=model, input_signature=input_signature, opset=13)
 
-    if not os.path.exists(f"models/{directory}"):
-        os.makedirs(f"models/{directory}")
+    model_ = log_onnx_model(onnx_model=onnx_model,
+                            artifact_path=f"models/{directory}",
+                            signature=infer_signature(X_test, model.predict(X_test)),
+                            registered_model_name="model_" + directory)
 
-    joblib.dump(scaler, f"models/{directory}/scaler.pkl")
+    mv = client.create_model_version(name="model_" + directory, source=model_.model_uri, run_id=model_.run_id)
 
-    with open(f"models/{directory}/model.onnx", "wb") as f:
-        f.write(onnx_model.SerializeToString())
+    client.transition_model_version_stage("model_" + directory, mv.version, "staging")
+
+    scaler_meta = {"feature_range": scaler.feature_range}
+    scaler = log_sklearn_model(
+        sk_model=scaler,
+        artifact_path=f"scalers/{directory}",
+        registered_model_name=directory + "_scaler",
+        metadata=scaler_meta
+    )
+
+    sv = client.create_model_version(name=directory + "_scaler", source=scaler.model_uri, run_id=scaler.run_id)
+
+    client.transition_model_version_stage(directory + "_scaler", sv.version, "staging")
+
+    # if not os.path.exists(f"models/{directory}"):
+    #     os.makedirs(f"models/{directory}")
+    #
+    # joblib.dump(scaler, f"models/{directory}/scaler.pkl")
+    #
+    # with open(f"models/{directory}/model.onnx", "wb") as f:
+    #     f.write(onnx_model.SerializeToString())
 
 
 def load_onnx_model(path: str) -> ort.InferenceSession:
