@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from src.config import settings
 from src.serve.services.ml_service import MLService
 
@@ -14,4 +14,9 @@ def save_daily_predictions(client):
 
         collection = db[model_type + "_predictions"]
 
-        collection.insert_one({"predictions": predictions, 'date': datetime.now().strftime("%Y-%m-%d")})
+        if model_type == 'price':
+            date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+        else:
+            date = datetime.now().strftime("%Y-%m-%d")
+
+        collection.insert_one({"predictions": predictions, 'date': date, 'createdAt': datetime.now()})
