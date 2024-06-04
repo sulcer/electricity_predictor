@@ -3,7 +3,7 @@ from src.config import settings
 from src.serve.services.ml_service import MLService
 
 
-def save_daliy_predictions(client):
+def save_daily_predictions(client):
     ml_service = MLService()
 
     db = client.electricity_predictor

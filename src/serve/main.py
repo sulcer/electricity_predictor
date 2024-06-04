@@ -6,7 +6,7 @@ from .routers import health_router, prediction_router, price_router, production_
 from ..models.model_registry import download_model_registry
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.memory import MemoryJobStore
-from .helpers.cron_log_predictions import save_daliy_predictions
+from .helpers.cron_log_predictions import save_daily_predictions
 
 app = FastAPI()
 client = create_database_client()
@@ -33,7 +33,7 @@ scheduler = AsyncIOScheduler(jobstores=jobstores, timezone="UTC")
 
 @scheduler.scheduled_job('cron', day_of_week='mon-sun', hour=13, minute=0, second=0)
 def scheduled_job_1():
-    save_daliy_predictions(client)
+    save_daily_predictions(client)
 
 
 # download model registry
