@@ -8,7 +8,12 @@ router = APIRouter(
 )
 
 
-@router.get("/{model_type}/{n_time_units}")
+@router.get(
+    "/{model_type}/{n_time_units}",
+    summary="Predict future values",
+    description="Predict future values based on the selected model type.",
+    response_description="The predicted values."
+)
 def predict(model_type: str, n_time_units: int):
     if model_type not in get_model_types():
         raise HTTPException(status_code=400, detail=f"Model type {model_type} not found")
