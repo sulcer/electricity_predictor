@@ -24,7 +24,7 @@ def build_model(input_shape: np.array) -> Sequential:
     return model
 
 
-def build_quantized_model(input_shape):
+def build_quantized_model(input_shape: np.array) -> Sequential:
     quantize_annotate_layer = tfmot.quantization.keras.quantize_annotate_layer
 
     model = tf_keras.Sequential(name="GRU")
