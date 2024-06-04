@@ -15,13 +15,11 @@ class MLService:
         fetcher = Fetcher()
         forcast = fetcher.fetch_weather_forcast()
 
-        model = ort.InferenceSession(f"models/{model_type}/model.onnx")
-        scaler: MinMaxScaler = joblib.load(f"models/{model_type}/scaler.pkl")
+        model = ort.InferenceSession(f"models/{model_type}/model_production.onnx")
+        scaler: MinMaxScaler = joblib.load(f"models/{model_type}/scaler_production.gz")
 
         data_service = DataService()
         dataset = data_service.get_data(model_type)
-
-        print(forcast)
 
         predictions = []
         last_rows = dataset.tail(self.window_size).values.tolist()

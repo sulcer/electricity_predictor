@@ -56,17 +56,12 @@ def predict_model():
 
             data = pd.read_csv(f"data/processed/{file}")
 
-            # model = load_onnx_model(f"models/{prediction_subject}/model.onnx")
-            # scaler = load_scaler(f"models/{prediction_subject}/scaler.pkl")
-
             _, _, X_test, y_test = preprocess_data(data, scaler)
 
             input_names = latest_model.get_inputs()[0].name
             output_names = latest_model.get_outputs()[0].name
 
             latest_model_predictions = latest_model.run([output_names], {input_names: X_test})[0]
-
-            # predictions = model.run([output_names], {input_names: X_test})[0]
 
             mse_latest, mae_latest, evs_latest = evaluate_model(y_test, latest_model_predictions, scaler)
 

@@ -86,14 +86,6 @@ def save_model(model: Sequential, scaler: MinMaxScaler, directory: str, X_test: 
 
     client.transition_model_version_stage(directory + "_scaler", sv.version, "staging")
 
-    # if not os.path.exists(f"models/{directory}"):
-    #     os.makedirs(f"models/{directory}")
-    #
-    # joblib.dump(scaler, f"models/{directory}/scaler.pkl")
-    #
-    # with open(f"models/{directory}/model.onnx", "wb") as f:
-    #     f.write(onnx_model.SerializeToString())
-
 
 def load_onnx_model(path: str) -> ort.InferenceSession:
     return ort.InferenceSession(path)
