@@ -35,7 +35,7 @@ def create_time_series(data: pd.DataFrame, n_past: int) -> Tuple[np.ndarray, np.
 def preprocess_data(data: pd.DataFrame, scaler: MinMaxScaler) -> Tuple[np.array, np.array, np.array, np.array]:
     data.drop('date', axis=1, inplace=True)
 
-    print(data.head())
+    # print(data.head())
 
     train_data, test_data = create_test_train_split(data)
 

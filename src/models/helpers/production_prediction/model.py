@@ -5,6 +5,8 @@ from keras.src.layers import GRU, Dropout, Dense
 from keras.src.optimizers import Adam
 import tensorflow_model_optimization as tfmot
 from tensorflow_model_optimization.python.core.quantization.keras.default_8bit import default_8bit_quantize_scheme
+from src.config import settings
+from dagshub.data_engine.datasources import mlflow
 
 
 def build_model(input_shape: np.array) -> Sequential:
@@ -53,6 +55,7 @@ def build_quantized_model(input_shape: np.array) -> Sequential:
 def train_model(X_train: np.array, y_train: np.array, X_test: np.array, y_test: np.array) -> Sequential:
     epochs = 10
     batch_size = 64
+    window_size = settings.window_size
 
     model = build_quantized_model(X_train)
 
@@ -61,5 +64,9 @@ def train_model(X_train: np.array, y_train: np.array, X_test: np.array, y_test: 
               batch_size=batch_size,
               validation_data=(X_test, y_test),
               verbose=1)
+
+    mlflow.log_param("window_size", window_size)
+    mlflow.log_param("batch_size", batch_size)
+    mlflow.log_param("epochs", epochs)
 
     return model
