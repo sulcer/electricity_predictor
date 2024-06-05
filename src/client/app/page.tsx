@@ -88,6 +88,36 @@ export default function Home() {
                                         </li>
                                     </ul>
                                 </div>
+                                <div className="flex flex-col justify-center space-y-4">
+                                    <ul className="grid gap-6">
+                                        <li>
+                                            <div className="grid gap-1">
+                                                <h3 className="text-xl font-bold">Latest Technologies Used</h3>
+                                                <p className="text-gray-500 dark:text-gray-400">
+                                                    We use cutting-edge technologies to provide you with the most accurate
+                                                    and up-to-date information.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="grid gap-1">
+                                                <h3 className="text-xl font-bold">Interactive Dashboard</h3>
+                                                <p className="text-gray-500 dark:text-gray-400">
+                                                    Take a look at models in realtime and see how they perform.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="grid gap-1">
+                                                <h3 className="text-xl font-bold">Compare Realtime and Predicted Data</h3>
+                                                <p className="text-gray-500 dark:text-gray-400">
+                                                    See how well our models perform in real-time and compare them to
+                                                    actual data.
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </section>
