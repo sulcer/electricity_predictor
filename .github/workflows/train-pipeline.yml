@@ -63,7 +63,6 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git pull
           git diff-index --quiet HEAD || (git commit -a -m "action: train models" --allow-empty)
           dvc push -r origin
           git push
