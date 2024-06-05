@@ -1,0 +1,47 @@
+name: Validate Predictions
+on:
+  schedule:
+   - cron: '0 17 * * *'
+  workflow_dispatch:
+
+env:
+  MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+  MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
+  MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+  DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_USER_TOKEN }}
+  DAGSHUB_REPO_NAME: ${{ secrets.DAGSHUB_REPO_NAME }}
+  MONGO_DB_URI: ${{ secrets.MONGO_DB_URI }}
+
+jobs:
+  validate_predictions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Prerequisites
+        run: |
+          python -m pip install --upgrade pip
+          pip install  poetry 
+          pip install dvc[s3]
+
+      - name: DVC setup
+        run: |
+          dvc remote modify origin --local access_key_id ${{ secrets.DVC_ACCESS_KEY_ID }}
+          dvc remote modify origin --local secret_access_key ${{ secrets.DVC_SECRET_ACCESS_KEY }}
+          dvc pull -r origin
+
+      - name: Install dependencies
+        run: |
+          poetry install --with dev
+
+      - name: DVC pull
+        run: |
+          dvc pull -r origin
+
+      - name: Run validation
+        run: |
+          poetry run poe validate_predictions
