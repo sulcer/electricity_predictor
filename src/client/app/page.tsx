@@ -1,9 +1,13 @@
-import Info from "@/components/home/info";
+import PriceInfo from "@/components/home/price-info";
+import ProductionInfo from "@/components/home/production-info";
+
+const production_types = ["cross", "fossil", "hydro", "nuclear"];
 
 export default function Home() {
   return (
       <>
-        <Info/>
+        <PriceInfo/>
+        {production_types.map((production_type) => <ProductionInfo production_type={production_type} key={production_type}/>)}
       </>
   );
 }

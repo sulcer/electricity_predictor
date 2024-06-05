@@ -31,7 +31,7 @@ logger.addHandler(file_handler)
 
 # Example usage
 # logger.debug("Debug message")
-# logger.info("Info message")
+# logger.info("PriceInfo message")
 # logger.warning("Warning message")
 # logger.error("Error message")
 # logger.critical("Critical message")
