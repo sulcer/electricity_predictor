@@ -13,9 +13,10 @@ env:
   MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
   DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_USER_TOKEN }}
   DAGSHUB_REPO_NAME: ${{ secrets.DAGSHUB_REPO_NAME }}
+  MONGO_DB_URI: ${{ secrets.MONGO_DB_URI }}
 
 jobs:
-  validation:
+  train:
     runs-on: ubuntu-latest
 
     steps:
