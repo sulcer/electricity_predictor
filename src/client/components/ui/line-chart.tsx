@@ -25,14 +25,15 @@ const options = {
 
 interface LineChartProps {
     chart_data: [number[], string[]];
+    label: string;
 }
 
-const LineChart: FC<LineChartProps> = ({ chart_data }) => {
+const LineChart: FC<LineChartProps> = ({ chart_data, label }) => {
     const data = {
     labels: chart_data[1],
     datasets: [
         {
-            label: 'Actual values',
+            label: label,
             backgroundColor: 'rgba(75,192,192,0.2)',
             borderColor: 'rgba(75,192,192,1)',
             borderWidth: 1,
@@ -43,9 +44,8 @@ const LineChart: FC<LineChartProps> = ({ chart_data }) => {
     ],
 };
 
-
     return (
-        <div className={'w-1/3'}>
+        <div className="max-h-[550px] max-w-4/5">
             <Line data={data} options={options}/>
         </div>
     );

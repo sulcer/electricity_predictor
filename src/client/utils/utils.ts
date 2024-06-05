@@ -64,3 +64,17 @@ export const prepareDataAndLabelsForPredictionChart = (data: Array<number> | any
 
     return [chartData, tableData];
 }
+
+export const transformLinkName = (str: string) => {
+    str = capitalizeFirstLetter(str);
+
+    if (str.includes('_')) {
+        const words = str.split('_');
+        if (words.length === 2) {
+            str = capitalizeFirstLetter(words[1]) + ' ' + capitalizeFirstLetter(words[0]);
+        } else {
+            str = words.map(capitalizeFirstLetter).join(' ');
+        }
+    }
+    return str;
+}
