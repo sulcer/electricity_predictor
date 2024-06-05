@@ -27,11 +27,10 @@ export const useProduction = (production_type: string, opts?: Omit<UseQueryOptio
 
 export const PREDICTIONS_KEY = 'predictions';
 
-// export const usePredictions = (model_type: string, number: number, opts?: Omit<UseQueryOptions<Prediction[], AxiosError, Prediction[], (typeof PREDICTIONS_KEY | number)[]>, 'queryKey'>) => {
-//     return useQuery({
-//         queryKey: [PREDICTIONS_KEY, model_type, number],
-//         queryFn: () => getPredictions(model_type, number),
-//         ...opts,
-//         },
-//     );
-// };
+export const usePredictions = (model_type: string, number: number, opts?: Omit<UseQueryOptions<any[], AxiosError, any[], (string | number)[]>, 'queryKey'>) => {
+    return useQuery({
+        queryKey: [PREDICTIONS_KEY, `${model_type}_${number}`],
+        queryFn: () => getPredictions(model_type, number),
+        ...opts || {},
+    });
+};

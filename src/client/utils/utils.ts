@@ -3,7 +3,7 @@ export const unixToLocalDatetime = (unixTime: number): string => {
     return date.toLocaleString();
 }
 
-export const mapTableData = (data: Array<Array<number>>) => {
+export const mapTableData = (data: any) => {
     const mappedData: any = [];
     data.map((d: any) => {
         mappedData.push({
@@ -26,6 +26,40 @@ export const prepareDataAndLabelsForChart = (data: Array<Array<number>> | any): 
     data.map((d: any) => {
         chartData.push(d[1]);
         tableData.push(unixToLocalDatetime(d[0]).substring(11, 17));
+    });
+
+    return [chartData, tableData];
+}
+
+
+export const mapTableDataForPrediction = (data: any) => {
+    data = data.message;
+
+    const mappedData: any = [];
+    data.map((d: any, index: number) => {
+        const formattedIndex = String(index).padStart(2, '0');
+        const formattedDate = `${formattedIndex}:00`;
+        mappedData.push({
+            date: formattedDate,
+            value: d
+        });
+    });
+
+    return mappedData;
+}
+
+
+export const prepareDataAndLabelsForPredictionChart = (data: Array<number> | any): [number[], string[]] => {
+    data = data.message;
+
+    const chartData: any = [];
+    const tableData: any = [];
+
+    data.map((d: any, index: number) => {
+        const formattedIndex = String(index).padStart(2, '0');
+        const formattedDate = `${formattedIndex}:00`;
+        chartData.push(d);
+        tableData.push(formattedDate);
     });
 
     return [chartData, tableData];
