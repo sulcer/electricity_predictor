@@ -8,7 +8,7 @@ router = APIRouter(
 
 
 @router.get(
-    "/",
+    "",
     summary="Get Latest Price Data",
     description="Fetches the latest price data.",
     response_description="The latest price data."
