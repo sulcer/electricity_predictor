@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 from .database import create_database_client
-from .routers import health_router, prediction_router, price_router, production_router
+from .routers import health_router, prediction_router, price_router, production_router, experiments_router
 from ..models.model_registry import download_model_registry
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.memory import MemoryJobStore
@@ -24,6 +24,7 @@ app.include_router(health_router)
 app.include_router(prediction_router)
 app.include_router(price_router)
 app.include_router(production_router)
+app.include_router(experiments_router)
 
 jobstores = {
     'default': MemoryJobStore()
