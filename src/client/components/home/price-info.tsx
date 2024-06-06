@@ -23,7 +23,7 @@ const PriceInfo = () => {
     return (
         <div className={' w-full'}>
             {isLoading ? <LoadingSpinner/> : <>
-                <h3 className={'text-xl font-bold mt-10'}>Data for Price</h3>
+                <h3 className={'text-xl font-bold mt-10'}>Data for Today Price</h3>
                 <div className="flex justify-center items-center gap-20">
                     <div className="flex-1">
                         {isLoading ? <LoadingSpinner/> : <DataTable columns={columns} data={mapTableData(price)}/>}

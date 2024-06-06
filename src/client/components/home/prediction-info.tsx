@@ -33,7 +33,7 @@ const PredictionInfo: FC<PredictionInfoProps> = ({modelType, number}) => {
     return (
         <div className={'w-full'}>
             {isLoading ? <LoadingSpinner/> : <>
-                <h3 className={'text-xl font-bold mt-10'}>Predictions for {transformLinkName(modelType)}</h3>
+                <h3 className={'text-xl font-bold mt-10'}>Predictions for {modelType === 'price' ? <>Tomorrow</> : <>Today</>} {transformLinkName(modelType)}</h3>
                 <div className="flex justify-center items-center gap-20">
                     <div className="flex-1">
                         {isLoading ? <LoadingSpinner/> :

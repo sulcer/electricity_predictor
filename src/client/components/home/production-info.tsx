@@ -27,7 +27,7 @@ const ProductionInfo: FC<ProductionInfoProps> = ({production_type}) => {
     return (
         <div className={' w-full'}>
             {isLoading ? <LoadingSpinner/> : <><h3 className={'text-xl font-bold mt-10'}>Data
-                for {transformLinkName(production_type)} Production</h3>
+                for Today {transformLinkName(production_type)} Production</h3>
                 <div className="flex justify-center items-center gap-20">
                     <div className="flex-1">
                         <DataTable columns={columns} data={mapTableData(production)}/>
