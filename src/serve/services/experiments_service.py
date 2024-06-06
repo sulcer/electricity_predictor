@@ -1,4 +1,3 @@
-import mlflow
 import pandas as pd
 import dagshub
 from dagshub.data_engine.datasources import mlflow
