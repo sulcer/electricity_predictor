@@ -37,6 +37,6 @@ jobs:
         run: bash <(curl -fsSL cli.new)
 
       - name: Deploy to Railway
-        run: railway up --service mbajk-client
+        run: railway up --service electricity-predictor-client
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
