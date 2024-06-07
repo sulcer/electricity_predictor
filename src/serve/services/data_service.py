@@ -35,6 +35,8 @@ class DataService:
         else:
             df = self.process_production_data(data, data_type)
 
+        df.dropna(inplace=True)
+
         return df.values.tolist()
 
     @staticmethod
