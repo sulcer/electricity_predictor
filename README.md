@@ -16,39 +16,29 @@ Electricity Predictor is a machine learning project designed to forecast electri
 - **Client**: Built with Next.js, offering an interactive UI/UX and an extended admin dashboard. Uses React Query for efficient API calls and caching.
 - **CI/CD**: Fully automated CI/CD pipelines for server and client deployment, data fetching.
 
-## Technologies Used
-
-### Dependencies
-- **Python**: ^3.12
-- **Pandas**: ^2.2.1
-- **Scikit-learn**: ^1.4.1.post1
-- **FastAPI**: ^0.110.0
-- **Uvicorn**: {extras = ["standard"], version = "^0.28.0"}
-- **Pytest**: ^8.1.1
-- **Jupyter**: ^1.0.0
-- **Numpy**: ^1.26.4
-- **Seaborn**: ^0.13.2
-- **TensorFlow**: ^2.15.0.post1
-- **Requests**: ^2.31.0
-- **SciPy**: ^1.12.0
-- **Poe the Poet**: ^0.25.0
-- **Pydantic Settings**: ^2.2.1
-- **Great Expectations**: ^0.18.12
-- **Evidently**: ^0.4.19
-- **MLflow**: ^2.12.1
-- **Dagshub**: ^0.3.24
-- **tf2onnx**: ^1.16.1
-- **ONNX Runtime**: ^1.17.3
-- **TF-Keras**: ^2.16.0
-- **TensorFlow Model Optimization**: ^0.8.0
-- **Cachetools**: ^5.3.3
-- **PyMongo**: ^4.7.2
-- **APScheduler**: ^3.10.4
-
-### Development Dependencies
-- **Ruff**: ^0.3.2
-- **Black**: ^24.4.0
-- **Jupyter**: ^1.0.0
+## Project Structure
+```
+├── README.md <- File containing project description and setup instructions
+├── data
+    ├── processed <- Processed data, prepared for training models
+    └── raw <- Raw fetched data
+├── models <- Trained and serialized models, model predictions, or summaries of models
+├── notebooks <- Jupyter notebooks
+├── reports <- Generated analysis files
+    └── figures <- Generated graphs and images used in the analysis
+    └── sites <- Generated sites in the data validation
+├── pyproject.toml <- File defining dependencies, library versions, etc.
+├── src <- Source code of the project
+  ├── __init__.py <- Initializes the "src" directory as a Python module
+  ├── data <- Scripts for data downloading, processing, etc.
+      └── validation <- Scripts for data validation
+  ├── models <- Scripts for training predictive models and using models for prediction
+  ├── serve <- Scripts for serving models as web services
+  ├── client <- Source code for the user interface
+  |── tests <- Tests for the project
+  ├── config.py <- Project configuration file
+  └── visualization <- Scripts for visualization
+```
 
 ### Modeling
 - **Models**: Uses GRU and Bidirectional GRU architectures.
@@ -87,3 +77,37 @@ Electricity Predictor is a machine learning project designed to forecast electri
 - **train**: `python3 -m src.models.train_model`
 - **predict**: `python3 -m src.models.predict_model`
 - **validate_predictions**: `python3 -m src.data.validation.validate_predictions`
+
+## Technologies Used
+
+### Dependencies
+- **Python**: ^3.12
+- **Pandas**: ^2.2.1
+- **Scikit-learn**: ^1.4.1.post1
+- **FastAPI**: ^0.110.0
+- **Uvicorn**: {extras = ["standard"], version = "^0.28.0"}
+- **Pytest**: ^8.1.1
+- **Jupyter**: ^1.0.0
+- **Numpy**: ^1.26.4
+- **Seaborn**: ^0.13.2
+- **TensorFlow**: ^2.15.0.post1
+- **Requests**: ^2.31.0
+- **SciPy**: ^1.12.0
+- **Poe the Poet**: ^0.25.0
+- **Pydantic Settings**: ^2.2.1
+- **Great Expectations**: ^0.18.12
+- **Evidently**: ^0.4.19
+- **MLflow**: ^2.12.1
+- **Dagshub**: ^0.3.24
+- **tf2onnx**: ^1.16.1
+- **ONNX Runtime**: ^1.17.3
+- **TF-Keras**: ^2.16.0
+- **TensorFlow Model Optimization**: ^0.8.0
+- **Cachetools**: ^5.3.3
+- **PyMongo**: ^4.7.2
+- **APScheduler**: ^3.10.4
+
+### Development Dependencies
+- **Ruff**: ^0.3.2
+- **Black**: ^24.4.0
+- **Jupyter**: ^1.0.0
