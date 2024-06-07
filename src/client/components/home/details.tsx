@@ -11,7 +11,6 @@ interface DetailsProps {
 }
 
 const Details: FC<DetailsProps> = ({ model_type }) => {
-    console.log(model_type)
     return (
         <div className={'mt-3 mx-10'}>
             <Link href={'/'}>

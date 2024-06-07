@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Navbar = () => {
     return (
-        <div className={'flex flex-1 justify-between'}>
+        <div className={'flex flex-1 justify-between m-5'}>
             <div>
                 <h1 className={'text-2xl font-bold'}>Energy Production</h1>
             </div>

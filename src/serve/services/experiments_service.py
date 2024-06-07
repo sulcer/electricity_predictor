@@ -36,7 +36,13 @@ class ExperimentService:
                 df = pd.concat([df, experiment_df])
 
         df = df.dropna()
+        df['start_time'] = pd.to_datetime(df['start_time'])
+        df = df.sort_values(by='start_time', ascending=False)
+
         data_dict = {col: df[col].tolist() for col in cols}
+        data_dict['mean_error'] = data_dict.pop('metrics.mean_error')
+        data_dict['mean_squared_error'] = data_dict.pop('metrics.mean_squared_error')
+
         return data_dict
 
     def get_train_model_experiments(self):
@@ -57,5 +63,12 @@ class ExperimentService:
                 df = pd.concat([df, experiment_df])
 
         df = df.dropna()
+        df['start_time'] = pd.to_datetime(df['start_time'])
+        df = df.sort_values(by='start_time', ascending=False)
+
         data_dict = {col: df[col].tolist() for col in cols}
+        data_dict['EVS_latest'] = data_dict.pop('metrics.EVS_latest')
+        data_dict['MSE_latest'] = data_dict.pop('metrics.MSE_latest')
+        data_dict['MAE_latest'] = data_dict.pop('metrics.MAE_latest')
+
         return data_dict

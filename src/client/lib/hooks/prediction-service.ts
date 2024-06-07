@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import {AxiosError} from "axios";
-import {getPredictions, getPrice, getProduction} from "@/lib/api";
+import {getPredictions, getPrice, getProduction, getTrainingMetrics, getValidationMetrics} from "@/lib/api";
 
 export const PRICE_KEY = 'price';
 
@@ -32,5 +32,25 @@ export const usePredictions = (model_type: string, number: number, opts?: Omit<U
         queryKey: [PREDICTIONS_KEY, `${model_type}_${number}`],
         queryFn: () => getPredictions(model_type, number),
         ...opts || {},
+    });
+};
+
+export const TRAIN_METRICS_KEY = 'train_metrics';
+
+export const useTrainingMetrics = (opts?: UseQueryOptions<any[], AxiosError, any[], [typeof TRAIN_METRICS_KEY]>) => {
+    return useQuery({
+        queryKey: [TRAIN_METRICS_KEY],
+        queryFn: getTrainingMetrics,
+        ...opts,
+    });
+};
+
+export const VALIDATION_METRICS_KEY = 'validation_metrics';
+
+export const useValidationMetrics = (opts?: UseQueryOptions<any[], AxiosError, any[], [typeof VALIDATION_METRICS_KEY]>) => {
+    return useQuery({
+        queryKey: [VALIDATION_METRICS_KEY],
+        queryFn: getValidationMetrics,
+        ...opts,
     });
 };

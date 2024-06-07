@@ -78,3 +78,34 @@ export const transformLinkName = (str: string) => {
     }
     return str;
 }
+
+export const mapTableDataForValidationMetrics = (data: any) => {
+    const mappedData: any = [];
+
+    data.start_time.forEach((_: any, index: number) => {
+        mappedData.push({
+            start_time: new Date(data.start_time[index]).toLocaleString(),
+            end_time: new Date(data.end_time[index]).toLocaleString(),
+            mean_error: data.mean_error[index],
+            mean_squared_error: data.mean_squared_error[index]
+        });
+    });
+
+    return mappedData;
+}
+
+export const mapTableDataForTrainingMetrics = (data: any) => {
+    const mappedData: any = [];
+
+    data.start_time.forEach((_: any, index: number) => {
+        mappedData.push({
+            start_time: new Date(data.start_time[index]).toLocaleString(),
+            end_time: new Date(data.end_time[index]).toLocaleString(),
+            EVS_latest: data.EVS_latest[index],
+            MAE_latest: data.MAE_latest[index],
+            MSE_latest: data.MSE_latest[index]
+        });
+    });
+
+    return mappedData;
+}
