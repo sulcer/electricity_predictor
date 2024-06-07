@@ -37,7 +37,11 @@ def scheduled_job_1():
     save_daily_predictions(client)
 
 
-# download model registry
+@scheduler.scheduled_job('cron', day_of_week='mon-sun', hour=12, minute=0, second=0)
+def scheduled_job_2():
+    download_model_registry()
+
+
 @app.on_event("startup")
 async def startup_event():
     download_model_registry()
