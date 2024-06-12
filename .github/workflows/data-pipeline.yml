@@ -1,8 +1,8 @@
 name: Fetch and Process Data
 
 on:
-  schedule:
-    - cron: '0 4 * * *'  # This runs the workflow at 4 AM every day
+  # schedule:
+  #   - cron: '0 4 * * *'  # This runs the workflow at 4 AM every day
   workflow_dispatch:
 
 permissions:
